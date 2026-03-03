@@ -2,14 +2,18 @@ package org.discordfalante.service;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.discordfalante.model.StructuredMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@Service
 public class MessageService {
     private static final Logger log = LoggerFactory.getLogger(MessageService.class);
 
@@ -21,9 +25,11 @@ public class MessageService {
             log.info("Mensagem inicial encontrada. Buscando o histórico subsequente...");
 
             channel.getHistoryAfter(messageId, 100).queue(history -> {
+                List<Message> historico = new ArrayList<>(history.getRetrievedHistory());
+                Collections.reverse(historico);
                 List<Message> allMessages = new ArrayList<>();
                 allMessages.add(originalMsg);
-                allMessages.addAll(history.getRetrievedHistory());
+                allMessages.addAll(historico);
 
                 List<StructuredMessage> structuredMessages = new ArrayList<>();
                 for (Message msg : allMessages) {
@@ -34,7 +40,6 @@ public class MessageService {
 
                     structuredMessages.add(new StructuredMessage(msg.getAuthor().getName(), msg.getContentDisplay(), repliedToAuthor));
                 }
-                Collections.reverse(structuredMessages);
                 log.info("Estruturação concluída. {} mensagens úteis filtradas.", structuredMessages.size());
                 future.complete(structuredMessages);
 

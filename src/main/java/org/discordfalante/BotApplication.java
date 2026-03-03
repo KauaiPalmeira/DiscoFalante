@@ -30,7 +30,7 @@ public class BotApplication {
      {@code @Author:} Kauai Palmeira
      */
     @Bean
-    public CommandLineRunner runBot() {
+    public CommandLineRunner runBot(SlashCommandListener slashCommandListener) {
         return args -> {
 
             var jda = JDABuilder.createDefault(
@@ -40,7 +40,7 @@ public class BotApplication {
                             GatewayIntent.MESSAGE_CONTENT
                     )
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
-                    .addEventListeners(new SlashCommandListener())
+                    .addEventListeners(slashCommandListener)
                     .build()
                     .awaitReady();
 
