@@ -1,9 +1,11 @@
 package org.discordfalante.service;
 
 import org.discordfalante.model.StructuredMessage;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MessageFormatter {
 
     public String format(List<StructuredMessage> messages) {

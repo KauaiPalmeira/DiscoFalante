@@ -2,7 +2,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+output.mp3
+output.wav
+src/main/java/org/discordfalante/DOCUMENTATION.MD
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
